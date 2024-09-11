@@ -189,3 +189,15 @@ const quotes = {
     { text: "There was never a good war, or a bad peace.", category: "War" },
   ],
 };
+// DOM elements
+const quoteText = document.getElementById("quote-text");
+const quoteCategory = document.getElementById("quote-category");
+const categorySelect = document.getElementById("category-select");
+// BUTTONS
+const previousQuoteBtn = document.getElementById("previous-quote");
+const nextQuoteBtn = document.getElementById("next-quote");
+const randomQuoteBtn = document.getElementById("random-quote");
+const toggleModeBtn = document.getElementById("toggleMode");
+const increaseFontBtn = document.getElementById("increase-font");
+const decreaseFontBtn = document.getElementById("decrease-font");
+const body = document.body;

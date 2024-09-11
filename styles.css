@@ -95,10 +95,66 @@ button:hover {
   border-color: var(--primary-color);
 }
 
-
 .footer {
   bottom: 0;
   text-align: center;
   margin-top: 128px;
   font-size: 14px;
+}
+
+#quote-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  margin-bottom: 20px 0;
+  width: 100%;
+  background: var(--quote-background);
+  padding: 30px 0px;
+  border-radius: 20px;
+  box-shadow: var(--button-shadow);
+}
+
+#quote-text {
+  font-size: 24px;
+  font-style: italic;
+}
+
+#quote-category {
+  font-size: 18px;
+  color: #9f9f9f;
+  margin-bottom: 10px;
+}
+
+/* //DARK MODE */ 
+
+body.dark-mode {
+  background-color: var(--background-dark);
+  color: var(--text-dark);
+}
+
+body.dark-mode button {
+  background-color: var(--background-dark);
+  color: var(--text-dark);
+}
+
+body.dark-mode #category-select {
+  background-color: var(--background-dark);
+  color: var(--text-dark);
+  border-color: var(--text-dark);
+}
+
+body.dark-mode #quote-category {
+  color: #d8d8d8;
+}
+
+body.dark-mode #quote-box {
+  text-align: center;
+  margin-bottom: 20px 0;
+  width: 100%;
+  background: var(--quote-dark-background);
+  padding: 30px 0;
+  border-radius: 20px;
+  box-shadow: var(--button-shadow);
 }
