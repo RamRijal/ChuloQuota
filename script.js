@@ -207,7 +207,7 @@ const increaseFontBtn = document.getElementById("increase-font");
 const decreaseFontBtn = document.getElementById("decrease-font");
 const body = document.body;
 
-// Function to update the quote display
+// updates the quote display
 function displayQuote(index) {
   const selectedQuotes = getSelectedQuotes();
   if (index >= 0 && index < selectedQuotes.length) {
@@ -217,7 +217,7 @@ function displayQuote(index) {
   }
 }
 
-// Get quotes based on selected category
+// Gets quotes based on selected category
 function getSelectedQuotes() {
   if (currentCategory === "all") {
     return Object.values(quotes).flat();
@@ -225,14 +225,14 @@ function getSelectedQuotes() {
   return quotes[currentCategory];
 }
 
-// Event: Change category
+// Changes category
 categorySelect.addEventListener("change", (e) => {
   currentCategory = e.target.value;
   currentQuoteIndex = 0;
   displayQuote(currentQuoteIndex);
 });
 
-// Event: Next Quote
+//Next Quote
 nextQuoteBtn.addEventListener("click", () => {
   const selectedQuotes = getSelectedQuotes();
   if (currentQuoteIndex < selectedQuotes.length - 1) {
@@ -240,14 +240,14 @@ nextQuoteBtn.addEventListener("click", () => {
   }
 });
 
-// Event: Previous Quote
+//Previous Quote
 previousQuoteBtn.addEventListener("click", () => {
   if (currentQuoteIndex > 0) {
     displayQuote(currentQuoteIndex - 1);
   }
 });
 
-// Event: Random Quote
+//Random Quote
 randomQuoteBtn.addEventListener("click", () => {
   const selectedQuotes = getSelectedQuotes();
   const randomIndex = Math.floor(Math.random() * selectedQuotes.length);
