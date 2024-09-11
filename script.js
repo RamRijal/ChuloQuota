@@ -29,7 +29,7 @@ const quotes = {
       category: "Science",
     },
     {
-      text: "Science is not only a disciple of reason but, also, one of romance and passion.",
+      text: "Science is not only a disciple of reason but also one of romance and passion.",
       category: "Science",
     },
     {
@@ -37,7 +37,7 @@ const quotes = {
       category: "Science",
     },
     {
-      text: "Equipped with his five senses, man explores the universe around him and calls the adventure Science.",
+      text: "Equipped with his five senses, man explores the universe and calls the adventure Science.",
       category: "Science",
     },
   ],
@@ -47,7 +47,7 @@ const quotes = {
       category: "Life",
     },
     {
-      text: "Do not dwell in the past, do not dream of the future, concentrate the mind on the present moment.",
+      text: "Do not dwell in the past, do not dream of the future, concentrate on the present moment.",
       category: "Life",
     },
     {
@@ -76,7 +76,7 @@ const quotes = {
     },
     { text: "Life is a long lesson in humility.", category: "Life" },
     {
-      text: "The purpose of life is not to be happy. It is to be useful, to be honorable, to be compassionate.",
+      text: "The purpose of life is not to be happy. It is to be useful, honorable, and compassionate.",
       category: "Life",
     },
   ],
@@ -194,132 +194,80 @@ let currentCategory = "all";
 let currentQuoteIndex = 0;
 let fontSize = 16;
 
-// DOM elements
 const quoteText = document.getElementById("quote-text");
 const quoteCategory = document.getElementById("quote-category");
 const categorySelect = document.getElementById("category-select");
-// BUTTONS
+const body = document.body;
+
 const previousQuoteBtn = document.getElementById("previous-quote");
 const nextQuoteBtn = document.getElementById("next-quote");
 const randomQuoteBtn = document.getElementById("random-quote");
 const toggleModeBtn = document.getElementById("toggleMode");
 const increaseFontBtn = document.getElementById("increase-font");
 const decreaseFontBtn = document.getElementById("decrease-font");
-const body = document.body;
 
-// updates the quote display
 function displayQuote(index) {
   const selectedQuotes = getSelectedQuotes();
-  if (index >= 0 && index < selectedQuotes.length) {
+  if (selectedQuotes[index]) {
     quoteText.textContent = `"${selectedQuotes[index].text}"`;
     quoteCategory.textContent = `(${selectedQuotes[index].category})`;
     currentQuoteIndex = index;
   }
 }
 
-// Gets quotes based on selected category
 function getSelectedQuotes() {
-  if (currentCategory === "all") {
-    return Object.values(quotes).flat();
-  }
-  return quotes[currentCategory];
+  return currentCategory === "all"
+    ? Object.values(quotes).flat()
+    : quotes[currentCategory];
 }
 
-// Changes category
 categorySelect.addEventListener("change", (e) => {
   currentCategory = e.target.value;
   currentQuoteIndex = 0;
   displayQuote(currentQuoteIndex);
 });
 
-//Next Quote
-nextQuoteBtn.addEventListener("click", () => {
-  const selectedQuotes = getSelectedQuotes();
-  if (currentQuoteIndex < selectedQuotes.length - 1) {
-    displayQuote(currentQuoteIndex + 1);
-  }
-});
+nextQuoteBtn.addEventListener("click", () =>
+  displayQuote(currentQuoteIndex + 1)
+);
+previousQuoteBtn.addEventListener("click", () =>
+  displayQuote(currentQuoteIndex - 1)
+);
 
-//Previous Quote
-previousQuoteBtn.addEventListener("click", () => {
-  if (currentQuoteIndex > 0) {
-    displayQuote(currentQuoteIndex - 1);
-  }
-});
-
-//Random Quote
 randomQuoteBtn.addEventListener("click", () => {
   const selectedQuotes = getSelectedQuotes();
-  const randomIndex = Math.floor(Math.random() * selectedQuotes.length);
-  displayQuote(randomIndex);
+  displayQuote(Math.floor(Math.random() * selectedQuotes.length));
 });
 
-// Toggle Dark/Light Mode
 toggleModeBtn.addEventListener("click", () => {
   body.classList.toggle("dark-mode");
-  updateDarkModeButtonText();
-  saveDarkModePreference();
-});
-
-function updateDarkModeButtonText() {
   toggleModeBtn.textContent = body.classList.contains("dark-mode")
     ? "Light Mode"
     : "Dark Mode";
-}
-
-// Font Size Increase/Decrease
-increaseFontBtn.addEventListener("click", () => {
-  changeFontSize(2);
+  localStorage.setItem("darkMode", body.classList.contains("dark-mode"));
 });
 
-decreaseFontBtn.addEventListener("click", () => {
-  changeFontSize(-2);
-});
+increaseFontBtn.addEventListener("click", () => changeFontSize(2));
+decreaseFontBtn.addEventListener("click", () => changeFontSize(-2));
 
 function changeFontSize(change) {
   fontSize = Math.max(12, Math.min(32, fontSize + change));
   quoteText.style.fontSize = `${fontSize}px`;
-  saveFontSizePreference();
-}
-
-// Local Storage functions
-function saveDarkModePreference() {
-  localStorage.setItem("darkMode", body.classList.contains("dark-mode"));
-}
-
-function saveFontSizePreference() {
   localStorage.setItem("fontSize", fontSize);
 }
 
 function loadPreferences() {
-  const darkMode = localStorage.getItem("darkMode") === "true";
-  if (darkMode) {
+  if (localStorage.getItem("darkMode") === "true")
     body.classList.add("dark-mode");
-  }
-  updateDarkModeButtonText();
-
-  const savedFontSize = localStorage.getItem("fontSize");
-  if (savedFontSize) {
-    fontSize = parseInt(savedFontSize, 10);
-    quoteText.style.fontSize = `${fontSize}px`;
-  }
+  fontSize = parseInt(localStorage.getItem("fontSize"), 10) || fontSize;
+  quoteText.style.fontSize = `${fontSize}px`;
 }
 
-// Keyboard navigation
 document.addEventListener("keydown", (e) => {
-  switch (e.key) {
-    case "ArrowLeft":
-      previousQuoteBtn.click();
-      break;
-    case "ArrowRight":
-      nextQuoteBtn.click();
-      break;
-    case " ":
-      randomQuoteBtn.click();
-      break;
-  }
+  if (e.key === "ArrowLeft") previousQuoteBtn.click();
+  if (e.key === "ArrowRight") nextQuoteBtn.click();
+  if (e.key === " ") randomQuoteBtn.click();
 });
 
-// Initialize app
 loadPreferences();
 displayQuote(currentQuoteIndex);
