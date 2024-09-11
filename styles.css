@@ -63,6 +63,38 @@ button:hover {
 #toggleMode:hover {
   background: #d5071b;
 }
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.Category-button {
+  margin-bottom: 20px;
+}
+
+#category-select {
+  padding: 10px;
+  font-size: 16px;
+  border: 2px solid #b9b9b9;
+  border-radius: 5px;
+  background-color: var(--background-light);
+  color: var(--text-light);
+  cursor: pointer;
+  transition: background-color var(--transition-duration),
+    color var(--transition-duration);
+}
+
+#category-select:hover {
+  background-color: #f0f0f0;
+}
+
+#category-select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
 
 .footer {
   bottom: 0;
