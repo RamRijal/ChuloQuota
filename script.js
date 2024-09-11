@@ -189,6 +189,11 @@ const quotes = {
     { text: "There was never a good war, or a bad peace.", category: "War" },
   ],
 };
+
+let currentCategory = "all";
+let currentQuoteIndex = 0;
+let fontSize = 16;
+
 // DOM elements
 const quoteText = document.getElementById("quote-text");
 const quoteCategory = document.getElementById("quote-category");
@@ -201,3 +206,120 @@ const toggleModeBtn = document.getElementById("toggleMode");
 const increaseFontBtn = document.getElementById("increase-font");
 const decreaseFontBtn = document.getElementById("decrease-font");
 const body = document.body;
+
+// Function to update the quote display
+function displayQuote(index) {
+  const selectedQuotes = getSelectedQuotes();
+  if (index >= 0 && index < selectedQuotes.length) {
+    quoteText.textContent = `"${selectedQuotes[index].text}"`;
+    quoteCategory.textContent = `(${selectedQuotes[index].category})`;
+    currentQuoteIndex = index;
+  }
+}
+
+// Get quotes based on selected category
+function getSelectedQuotes() {
+  if (currentCategory === "all") {
+    return Object.values(quotes).flat();
+  }
+  return quotes[currentCategory];
+}
+
+// Event: Change category
+categorySelect.addEventListener("change", (e) => {
+  currentCategory = e.target.value;
+  currentQuoteIndex = 0;
+  displayQuote(currentQuoteIndex);
+});
+
+// Event: Next Quote
+nextQuoteBtn.addEventListener("click", () => {
+  const selectedQuotes = getSelectedQuotes();
+  if (currentQuoteIndex < selectedQuotes.length - 1) {
+    displayQuote(currentQuoteIndex + 1);
+  }
+});
+
+// Event: Previous Quote
+previousQuoteBtn.addEventListener("click", () => {
+  if (currentQuoteIndex > 0) {
+    displayQuote(currentQuoteIndex - 1);
+  }
+});
+
+// Event: Random Quote
+randomQuoteBtn.addEventListener("click", () => {
+  const selectedQuotes = getSelectedQuotes();
+  const randomIndex = Math.floor(Math.random() * selectedQuotes.length);
+  displayQuote(randomIndex);
+});
+
+// Toggle Dark/Light Mode
+toggleModeBtn.addEventListener("click", () => {
+  body.classList.toggle("dark-mode");
+  updateDarkModeButtonText();
+  saveDarkModePreference();
+});
+
+function updateDarkModeButtonText() {
+  toggleModeBtn.textContent = body.classList.contains("dark-mode")
+    ? "Light Mode"
+    : "Dark Mode";
+}
+
+// Font Size Increase/Decrease
+increaseFontBtn.addEventListener("click", () => {
+  changeFontSize(2);
+});
+
+decreaseFontBtn.addEventListener("click", () => {
+  changeFontSize(-2);
+});
+
+function changeFontSize(change) {
+  fontSize = Math.max(12, Math.min(32, fontSize + change));
+  quoteText.style.fontSize = `${fontSize}px`;
+  saveFontSizePreference();
+}
+
+// Local Storage functions
+function saveDarkModePreference() {
+  localStorage.setItem("darkMode", body.classList.contains("dark-mode"));
+}
+
+function saveFontSizePreference() {
+  localStorage.setItem("fontSize", fontSize);
+}
+
+function loadPreferences() {
+  const darkMode = localStorage.getItem("darkMode") === "true";
+  if (darkMode) {
+    body.classList.add("dark-mode");
+  }
+  updateDarkModeButtonText();
+
+  const savedFontSize = localStorage.getItem("fontSize");
+  if (savedFontSize) {
+    fontSize = parseInt(savedFontSize, 10);
+    quoteText.style.fontSize = `${fontSize}px`;
+  }
+}
+
+// Keyboard navigation
+document.addEventListener("keydown", (e) => {
+  switch (e.key) {
+    case "ArrowLeft":
+      previousQuoteBtn.click();
+      break;
+    case "ArrowRight":
+      nextQuoteBtn.click();
+      break;
+    case " ":
+      randomQuoteBtn.click();
+      break;
+  }
+});
+
+// Initialize app
+loadPreferences();
+displayQuote(currentQuoteIndex);
